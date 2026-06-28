@@ -13,7 +13,6 @@ def read_file(file_path) -> str:
         content += f.read()
     return content
 def generate_page(from_path, template_path, dest_path, basepath):
-    print(f"basepath: {basepath}")
     markdown_content = read_file(from_path)
     template_content = read_file(template_path)
     node = markdown_doc_to_html_node(markdown_doc=markdown_content)
@@ -23,7 +22,7 @@ def generate_page(from_path, template_path, dest_path, basepath):
     template_content = template_content.replace("{{ Title }}", title)
     template_content = template_content.replace("{{ Content }}", html)
     template_content = template_content.replace('href="/', f"href=\"{basepath}")
-    template_content = template_content.replace('src="/', f'src="\"{basepath}')
+    template_content = template_content.replace('src="/', f'src=\"{basepath}')
 
     if not os.path.exists(dest_path):
         os.makedirs(dest_path)
