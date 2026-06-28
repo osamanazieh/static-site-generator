@@ -24,7 +24,7 @@ def copy(src, dst):
             copy(src_path, dst_path) 
 
 def main():
-    basepath = sys.argv[0] if sys.argv[0] != "" else "/"
+    basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
 
 
 
@@ -43,6 +43,6 @@ def main():
     print(os.path.dirname(__file__))
     template_path = os.path.join("/".join(os.path.dirname(__file__).split("/")[:-1]) ,"template.html")
     dest_path = os.path.join("/".join(os.path.dirname(__file__).split("/")[:-1]), "docs")
-
-    generate_pages_recursive(from_path, template_path, dest_path, "/")
+    
+    generate_pages_recursive(from_path, template_path, dest_path, basepath)
 main()
