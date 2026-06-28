@@ -12,19 +12,21 @@ def read_file(file_path) -> str:
     with open(file_path, "r") as f:
         content += f.read()
     return content
-def generate_page(from_path, template_path, dest_path):
-    # print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+def generate_page(from_path, template_path, dest_path, basepath):
     markdown_content = read_file(from_path)
     template_content = read_file(template_path)
     node = markdown_doc_to_html_node(markdown_doc=markdown_content)
     html = node.to_html()
-    title = fetch_title(markdown_content)
     
+    title = fetch_title(markdown_content)
     template_content = template_content.replace("{{ Title }}", title)
     template_content = template_content.replace("{{ Content }}", html)
+    template_content = template_content.replace("href=/", f"href={basepath}")
+    template_content = template_content.replace("src=/", f"src={basepath}")
+
     if not os.path.exists(dest_path):
         os.makedirs(dest_path)
-    # print(f"writing to {dest_path}")
+  
     with open(dest_path+"/index.html", "w") as f:
         f.write(template_content)
 

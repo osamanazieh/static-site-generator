@@ -1,4 +1,5 @@
 import os 
+import sys
 import shutil
 from utility.fetch_title import fetch_title
 from utility.generate_page import generate_page
@@ -23,28 +24,24 @@ def copy(src, dst):
             copy(src_path, dst_path) 
 
 def main():
+    basepath = sys.argv[0] if sys.argv[0] is not None else "/"
+
+
+
+    
     current_dirname = os.path.dirname(__file__)
     path_folders = current_dirname.split("/")[:-1]
     project_dir = "/".join(path_folders)
-    dst_dir = project_dir + "/public"
+    dst_dir = os.path.join(project_dir, "docs")
     src_dir = project_dir + "/static"
-    copy(src_dir, dst_dir)
+    copy(src_dir, "docs")
 
 
 
 
-    from_path = "/".join(os.path.dirname(__file__).split("/")[:-1]) +"/content"
-    print(from_path)
+    from_path = os.path.join("/".join(os.path.dirname(__file__).split("/")[:-1]), "/content")
+    template_path = os.path.join("/".join(os.path.dirname(__file__).split("/")[:-1]) ,"/template.html")
+    dest_path = os.path.join("/".join(os.path.dirname(__file__).split("/")[:-1]), "/docs")
 
-    dest_path = "/".join(os.path.dirname(__file__).split("/")[:-1])+"/public"
-    print(dest_path)
-
-    template_path = "/".join(os.path.dirname(__file__).split("/")[:-1])+"/template.html"
-    print(template_path)
-
-
-    # from_path = os.path.abspath("content")
-    # template_path = os.path.abspath("template.html")
-    # dest_path = os.path.abspath("public")
-    generate_pages_recursive(from_path, template_path, dest_path)
+    generate_pages_recursive(from_path, template_path, dest_path, "/")
 main()
