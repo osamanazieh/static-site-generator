@@ -18,8 +18,8 @@ class TestTextNode(unittest.TestCase):
     def test_text(self):
         node = TextNode("This is a text node", TextType.TEXT)
         node2 = TextNode("img", TextType.IMAGE, url="testing.com")
-        html_node = text_node_to_html_node(node)
-        image_node = text_node_to_html_node(node2)
+        html_node = text_node_to_leaf_node(node)
+        image_node = text_node_to_leaf_node(node2)
         self.assertEqual(html_node.tag, None)
         self.assertEqual(image_node.value, None)
         

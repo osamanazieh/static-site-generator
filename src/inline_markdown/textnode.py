@@ -9,35 +9,36 @@ class TextType(Enum):
     LINK = "link"
     IMAGE = "image"
 class TextNode:
-    def __init__(self, text: str, text_type: TextType, url: str|None = None):
+    def __init__(self, text: str, text_type: TextType, props: dict[str, str]|None = None):
         self.text = text
         self.text_type = text_type
-        self.url = url
+        self.props = props
     def __eq__(self, other) -> bool:
        return (
         (self.text == other.text)
         and (self.text_type.value == other.text_type.value) 
-        and (self.url == self.url)
+        and (self.props == self.props)
         )
 
 
     def __repr__(self):
-       return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+       return f"TextNode({self.text}, {self.text_type.value}, {self.props})"
 
 
-def text_node_to_html_node(text_node: "TextNode") -> LeafNode:
-    match(text_node.text_type):
-        case TextType.TEXT:
+def text_node_to_leaf_node(text_node: "TextNode") -> LeafNode:
+
+    match(text_node.text_type.value):
+        case "text":
             return LeafNode(tag=None, value=text_node.text)
-        case TextType.BOLD:
+        case "bold":
             return LeafNode(tag="b", value=text_node.text)
-        case TextType.ITALIC:
+        case "italic":
             return LeafNode(tag="i", value=text_node.text)
-        case TextType.CODE:
+        case "code":
             return LeafNode(tag="code", value=text_node.text)
-        case TextType.IMAGE:
-            return LeafNode(tag="img", value=None, props={"alt":text_node.text,"url": str(text_node.url)})
-        case TextType.LINK:
-            return LeafNode(tag="a", value=text_node.text, props={"url":"somewhere.com"})
+        case "image":
+            return LeafNode(tag="img", value=text_node.text, props=text_node.props)
+        case "link":
+            return LeafNode(tag="a", value=text_node.text, props=text_node.props)
         case _:
             raise ValueError(f"the type of {text_node} must be of TextType")
