@@ -34,7 +34,7 @@ def main():
     project_dir = "/".join(path_folders)
     dst_dir = os.path.join(project_dir, "docs")
     src_dir = project_dir + "/static"
-    copy(src_dir, "docs")
+    copy(src_dir, dst_dir)
 
 
 
